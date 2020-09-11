@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cursorStalker</title>
+</head>
+
+<body>
+    <style>
+        .flex_set {
+            display: flex;
+        }
+
+        .flex_set>div {
+            width: 50%;
+            height: 20vw;
+            position: relative;
+            z-index: 1;
+            margin: 40px;
+        }
+
+        #green {
+            background-color: green;
+        }
+
+        #red {
+            background-color: red;
+        }
+
+        #black {
+            background-color: black;
+        }
+
+        #pink {
+            background-color: pink;
+        }
+
+        #cursor {
+            pointer-events: none;
+            display: block;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 50px;
+            height: 50px;
+            background-color: #333;
+            /* transition: transform 0.2s;
+            transition-timing-function: ease-out; */
+            z-index: 650;
+        }
+
+        #cursor.hover {
+            background-color: #fff;
+        }
+     
+    </style>
+    <section class="flex_set">
+        <div id="green" class="link"></div>
+        <div id="red" class="link"></div>
+    </section>
+    <section class="flex_set">
+        <div id="black" class="link"></div>
+        <div id="pink" class="link"></div>
+    </section>
+    <span id="cursor"></span>
+    <script>
+        {
+            let corsor = document.querySelector('#cursor')
+            let corsorY, corsorX
+            let hoverFlag = false
+            const links = document.querySelectorAll('.link')
+
+            corsor.style.top = '-' + corsor.clientWidth / 2 + 'px'
+            corsor.style.left = '-' + corsor.clientHeight / 2 + 'px'
+
+            window.addEventListener('mousemove', function (e) {
+                // corsor.style.top = (e.clientY - (corsor.clientHeight / 2)) + 'px'
+                // corsor.style.left = (e.clientX - (corsor.clientWidth / 2)) + 'px'
+                if (hoverFlag === false) {
+                    corsor.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px)'
+                }
+            })
+
+            links.forEach((target) => {
+                target.addEventListener('mouseover', (e) => {
+                    hoverFlag = true
+                    corsor.classList.add('hover')
+                    let targetLink = e.target.getBoundingClientRect()
+                    // console.log(targetLink.height)
+                    let targetLinkY = targetLink.y + (targetLink.height / 2)
+                    let targetLinkX = targetLink.x + (targetLink.width / 2)
+                    corsor.style.transform = 'translate(' + targetLinkX + 'px, ' + targetLinkY + 'px)'
+                })
+                target.addEventListener('mouseout', (e) => {
+                    hoverFlag = false
+                    corsor.classList.remove('hover')
+                })
+
+            })
+
+        }
+    </script>
+</body>
+
+</html>
